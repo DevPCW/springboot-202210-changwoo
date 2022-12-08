@@ -19,4 +19,6 @@ public class Controller1 {
     public String page2() {
         return "page2"; // 얘는 html 파일 이름임
     }
+
+
 }

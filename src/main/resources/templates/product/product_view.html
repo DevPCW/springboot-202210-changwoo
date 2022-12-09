@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>상품조회</title>
+</head>
+
+<body>
+      <h1>상품 등록 페이지</h1>
+      <table>
+        <tr>
+          <td>상품코드</td>
+          <td th:text="${productDto.productCode}"></td>
+          <!--서버사이드 랜더링 => th: 는 텍스트 노드를 생성해 줌
+              'Model' 의 'productDto' 에서 'get' 해라는 표현식인데, 'get' 메소드가 생략되어 있음.
+              암튼 그래서 'Dto' 클래스에는 'Getter' , 'Setter' 가 다 필요함.-->
+        </tr>
+        <tr>
+          <td>상품명</td>
+          <td th:text="${productDto.productName}"></td>
+        </tr>
+        <tr>
+          <td>가격</td>
+          <td th:text="${productDto.price}"></td>
+        </tr>
+        <tr>
+          <td>수량</td>
+          <td th:text="${productDto.stock}"></td>
+        </tr>
+      </table>
+</body>
+
+</html>

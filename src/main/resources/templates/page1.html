@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>page1</title>
@@ -7,6 +7,7 @@
 
 <body>
     <h1>페이지 1</h1>
+    <h1 th:text="${key}"></h1>
 </body>
 
 </html>

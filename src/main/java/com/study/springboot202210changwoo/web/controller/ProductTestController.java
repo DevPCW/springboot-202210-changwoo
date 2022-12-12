@@ -31,7 +31,7 @@ public class ProductTestController {
 //        return "product/product_view";
 //    }
 
-    @PostMapping("/api/product") // 가능한 어노테이션 적으셈: 얘가 파라미터다라는 표기를 해야함
+    @PostMapping("/api/product")
     public String registerProduct(Model model, ProductDto productDto) {
         model.addAttribute("productDto", productDto);
         System.out.println(productDto);

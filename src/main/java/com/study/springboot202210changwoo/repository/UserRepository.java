@@ -6,5 +6,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UserRepository {
     public int saveUser(UserDto userDto);
-    public UserDto findUserById(int userId);
+    public UserDto findUserByUserId(int userId);
 }

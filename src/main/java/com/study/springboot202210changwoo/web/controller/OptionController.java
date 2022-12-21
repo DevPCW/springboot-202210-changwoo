@@ -25,10 +25,16 @@ public class OptionController {
         System.out.println(categoryDto);
         int categoryId = optionService.addCategory(categoryDto);
 
-//        return ResponseEntity.created(URI.create("/api/option/category" + optionService.addCategory(categoryDto))).body(categoryDto);
+//        return ResponseEntity.created(URI.create("/api/option/category/" + optionService.addCategory(categoryDto)))
+//        .body(categoryDto);
+        // 자동으로 'Headers' 에 'Location' 까지 생성됨
 
-        return ResponseEntity.created(URI.create("/api/option/category/newcate/" + categoryId)).body(categoryDto);
+        return ResponseEntity.created(URI.create("/api/option/category/newcate/" + categoryId))
+                .body(categoryDto);
     }
+
+
+
     @GetMapping("/categories")
     public ResponseEntity<?> getCategories() {
         return ResponseEntity.ok(optionService.getCategoryList());

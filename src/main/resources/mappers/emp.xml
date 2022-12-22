@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.springboot202210changwoo.repository.EmployeeRepository">
+    <insert id="saveEmployee" parameterType="com.study.springboot202210changwoo.web.dto.EmpDto"
+            useGeneratedKeys="true" keyProperty="empId">
+        insert into emp_mst
+        values(0, #{empName}, #{empAge}, #{empPhone})
+    </insert>
+
+    <select id="findEmployeeByEmpId" parameterType="integer" resultType="com.study.springboot202210changwoo.web.dto.EmpDto">
+        select
+            emp_id as empId,
+            emp_name as empName,
+        from
+            emp_mst
+        where
+            emp_id = #{emp_id}
+    </select>
+
+    <update id="modifyEmployee" parameterType="com.study.springboot202210changwoo.web.dto.EmpDto">
+        update emp_mst
+        <trim prefix="set" suffixOverrides=",">
+            <if test="empName != null">
+                emp_name = #{empName},
+            </if>
+            <if test="empAge != null">
+                emp_age = #{empAge},
+            </if>
+            <if test="empPhone != null">
+                emp_phone = #{empPhone},
+            </if>
+        </trim>
+        where
+        emp_id = #{empId}
+    </update>
+</mapper>

@@ -9,6 +9,8 @@
         values(0, #{username}, #{password}, #{name}, #{email})
     </insert>
 
+
+
     <select id="findUserByUserId" parameterType="integer" resultType="com.study.springboot202210changwoo.web.dto.UserDto">
         select
             user_id as userId,
@@ -20,5 +22,20 @@
             user_mst
         where
             user_id = #{user_id}
+    </select>
+
+    <select id="findUserByUsername" parameterType="String"
+            resultType="com.study.springboot202210changwoo.web.dto.UserDto">
+        select
+            user_id as userId,
+            username,
+            password,
+            name,
+            email
+        from
+            user_mst
+        where
+            username = #{username}
+
     </select>
 </mapper>

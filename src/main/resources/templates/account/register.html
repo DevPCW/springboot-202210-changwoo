@@ -53,6 +53,11 @@
         box-shadow: 0px 0px 10px 1px #dbdbdb;
       }
 
+      .success {
+        border: 3px solid #00dd4d;
+        background-color: #a4ffc4;
+      }
+
       .error-msg {
         color: rgb(255,73,73);
         font-size: 11px; /* 추가1 */
@@ -83,7 +88,7 @@
         <div class="register-inputs">
           <input type="text" class="register-text" placeholder="사용자이름">
           <div class="error-msg">
-            이미 존재하는 사용자이름입니다. 
+            
           </div>
         </div>
         <div class="register-inputs">
@@ -110,7 +115,7 @@
     <script>
       class RegisterApi {
         static #instance = null;
-        static #getInstance() {
+        static getInstance() {
           if(this.#instance == null) {
             this.#instance = new RegisterApi();
           }
@@ -135,18 +140,23 @@
         }
 
         duplicateUsername(username) {
+          const usernameError = document.querySelectorAll(".error-msg")[0];
+          const usernameInput = document.querySelectorAll('.register-text')[0];
           $.ajax({
             async: false,
             type: "get",
             url: "/api/account/username",
-            contentType: "application/json",
-            data: JSON.stringify({"username": username}),
+            data: {"username": username},
             dataType: "json",
             success: (response) => {
-
+              usernameInput.classList.add("success");
+              usernameError.textContent = "";
+              
             },
             error: (errorResponse) => {
-
+              console.log(errorResponse);
+              usernameInput.classList.remove('success');
+              usernameError.textContent = errorResponse.responseJSON.data.duplicate;
             }
           });
         }
@@ -164,7 +174,6 @@
         addEventToUsernameInput() {
           const usernameInput = document.querySelectorAll('.register-text')[0];
           usernameInput.onblur = () => {
-            alert("중복확인 요청");
             RegisterApi.getInstance().duplicateUsername(usernameInput.value);
           }
         }

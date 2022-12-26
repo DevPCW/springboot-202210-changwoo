@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <title>register</title>
     <style>
@@ -32,7 +32,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        
+
         margin-bottom: 15px;
         width: 80%;
       }
@@ -59,7 +59,7 @@
       }
 
       .error-msg {
-        color: rgb(255,73,73);
+        color: rgb(255, 73, 73);
         font-size: 11px; /* 추가1 */
       }
 
@@ -80,43 +80,35 @@
         box-shadow: 0px 0px 10px 1px #dbdbdb;
       }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="container">
       <h1 class="register-title">회원가입</h1>
-        <div class="register-inputs">
-          <input type="text" class="register-text" placeholder="사용자이름">
-          <div class="error-msg">
-            
-          </div>
-        </div>
-        <div class="register-inputs">
-          <input type="password" class="register-text" placeholder="비밀번호">
-          <div class="error-msg">
-
-          </div>
-        </div>
-        <div class="register-inputs">
-          <input type="text" class="register-text" placeholder="이름">
-          <div class="error-msg">
-
-          </div>
-        </div>
-        <div class="register-inputs">
-          <input type="text" class="register-text" placeholder="이메일">
-          <div class="error-msg">
-
-          </div>
-        </div>
-        <button class="register-button">회원가입</button>
+      <div class="register-inputs">
+        <input type="text" class="register-text" placeholder="사용자이름" />
+        <div class="error-msg"></div>
+      </div>
+      <div class="register-inputs">
+        <input type="password" class="register-text" placeholder="비밀번호" />
+        <div class="error-msg"></div>
+      </div>
+      <div class="register-inputs">
+        <input type="text" class="register-text" placeholder="이름" />
+        <div class="error-msg"></div>
+      </div>
+      <div class="register-inputs">
+        <input type="text" class="register-text" placeholder="이메일" />
+        <div class="error-msg"></div>
+      </div>
+      <button class="register-button">회원가입</button>
     </div>
 
     <script>
       class RegisterApi {
         static #instance = null;
         static getInstance() {
-          if(this.#instance == null) {
+          if (this.#instance == null) {
             this.#instance = new RegisterApi();
           }
           return this.#instance;
@@ -131,33 +123,33 @@
             data: JSON.stringify(user),
             dataType: "json",
             success: (response) => {
-
+              console.log(response);
             },
             error: (errorResponse) => {
-
-            }
+              console.log(errorResponse);
+            },
           });
         }
 
         duplicateUsername(username) {
           const usernameError = document.querySelectorAll(".error-msg")[0];
-          const usernameInput = document.querySelectorAll('.register-text')[0];
+          const usernameInput = document.querySelectorAll(".register-text")[0];
           $.ajax({
             async: false,
             type: "get",
             url: "/api/account/username",
-            data: {"username": username},
+            data: { username: username },
             dataType: "json",
             success: (response) => {
               usernameInput.classList.add("success");
               usernameError.textContent = "";
-              
             },
             error: (errorResponse) => {
               console.log(errorResponse);
-              usernameInput.classList.remove('success');
-              usernameError.textContent = errorResponse.responseJSON.data.duplicate;
-            }
+              usernameInput.classList.remove("success");
+              usernameError.innerHTML =
+                errorResponse.responseJSON.data.username;
+            },
           });
         }
       }
@@ -165,25 +157,38 @@
       class RegisterService {
         static #instance = null;
         static getInstance() {
-          if(this.#instance == null) {
+          if (this.#instance == null) {
             this.#instance = new RegisterService();
           }
           return this.#instance;
         }
 
         addEventToUsernameInput() {
-          const usernameInput = document.querySelectorAll('.register-text')[0];
+          const usernameInput = document.querySelectorAll(".register-text")[0];
           usernameInput.onblur = () => {
             RegisterApi.getInstance().duplicateUsername(usernameInput.value);
-          }
+          };
+        }
+
+        addEventToRegisterButton() {
+          const registerButton = document.querySelector(".register-button");
+          registerButton.onclick = () => {
+            const registerInputs = document.querySelectorAll(".register-text");
+            const user = {
+              username: registerInputs[0].value,
+              password: registerInputs[1].value,
+              name: registerInputs[2].value,
+              email: registerInputs[3].value
+            };
+            RegisterApi.getInstance().registrationUser(user);
+          };
         }
       }
 
       window.onload = () => {
         RegisterService.getInstance().addEventToUsernameInput();
-      }
-
+        RegisterService.getInstance().addEventToRegisterButton();
+      };
     </script>
-</body>
-
+  </body>
 </html>

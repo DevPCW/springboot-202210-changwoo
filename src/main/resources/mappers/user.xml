@@ -36,6 +36,5 @@
             user_mst
         where
             username = #{username}
-
     </select>
 </mapper>

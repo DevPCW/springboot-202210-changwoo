@@ -3,6 +3,9 @@ package com.study.springboot202210changwoo.web.controller.account;
 import com.study.springboot202210changwoo.service.UserService;
 import com.study.springboot202210changwoo.web.dto.CMRespDto;
 import com.study.springboot202210changwoo.web.dto.UserDto;
+import com.study.springboot202210changwoo.web.dto.UsernameDto;
+import com.study.springboot202210changwoo.web.exception.CustomTestException;
+import com.study.springboot202210changwoo.web.exception.CustomValidException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -18,7 +21,6 @@ import java.util.Map;
 
 
 @RestController
-//@Validated
 @RequestMapping("/api/account")
 public class AccountApiController {
 
@@ -32,30 +34,38 @@ public class AccountApiController {
     // {5,20} -> 아이디 최소 최대 글자 개수 (중괄호 안 공백 포함하면안됨)
     
     @GetMapping("/username") 
-    public ResponseEntity<?> duplicateUsername(@Pattern(regexp = "^[a-zA-Z\\d]{5,20}$",
-            message = "사용자 이름은 영문, 숫자 조합이어야하며<br>5자 이상 20자 이하로 작성하세요.") String username) { // 중복확인
+    public ResponseEntity<?> duplicateUsername(@Valid UsernameDto usernameDto, BindingResult bindingResult) { // 중복확인
 //        System.out.println(userDto);
 //        System.out.println(bindingResult.getErrorCount());
 //        System.out.println(bindingResult.getFieldErrors());
 //        System.out.println(bindingResult.hasErrors());
 
-        userService.duplicateUsername(username);
+//        if(bindingResult.hasErrors()) {
+//            Map<String, String> errorMap = new HashMap<>();
+//            bindingResult.getFieldErrors().forEach(error -> {
+//                errorMap.put(error.getField(), error.getDefaultMessage());
+//            });
+////            errorMap.forEach((k, v) -> {
+////                System.out.println(k + ": " + v);
+////            });
+//            throw new CustomValidException(errorMap);
+//        }
+        userService.duplicateUsername(usernameDto.getUsername());
         return ResponseEntity.ok().body(new CMRespDto<>("가입가능한 사용자이름", true));
     }
 
     @PostMapping("/user")
     public ResponseEntity<?> register(@RequestBody @Valid UserDto userDto, BindingResult bindingResult) {
-//        System.out.println(userDto);
-//        System.out.println(bindingResult.getFieldErrors());
-        if(bindingResult.hasErrors()) {
-            Map<String, String> errorMap = new HashMap<>();
-            bindingResult.getFieldErrors().forEach(error -> {
-               errorMap.put(error.getField(), error.getDefaultMessage());
-            });
-            errorMap.forEach((k, v) -> {
-                System.out.println(k + ": " + v);
-            });
-        }
+//        if(bindingResult.hasErrors()) {
+//            Map<String, String> errorMap = new HashMap<>();
+//            bindingResult.getFieldErrors().forEach(error -> {
+//                errorMap.put(error.getField(), error.getDefaultMessage());
+//                System.out.println(errorMap.get(error.getField()));
+//            });
+//
+//            throw new CustomValidException(errorMap);
+//        }
+
         return ResponseEntity
                 .created(URI.create("/account/login"))
                 .body(new CMRespDto<>("회원가입 완료", null));

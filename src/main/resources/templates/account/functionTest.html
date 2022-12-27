@@ -1,16 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Title</title>
-</head>
-<body>
-  <script>
-    const test = () => {
-      alert("테스트 호출!!!");
-    }
+  </head>
+  <body>
+    <script>
+      const user = {
+        username: "test",
+        password: "1234",
+        name: "김준일",
+      };
 
-    test();
-  </script>
-</body>
+      Object.keys(user).forEach((key) => {
+        console.log(key);
+        console.log("------------------------------");
+        console.log(user[key]);
+      });
+
+      // console.log(Object.keys(user));
+      console.log("------------------------------");
+      console.log(user[Object.keys(user)[1]]);
+    </script>
+  </body>
 </html>

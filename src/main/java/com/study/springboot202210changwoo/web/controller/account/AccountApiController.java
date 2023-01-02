@@ -75,7 +75,7 @@ public class AccountApiController {
         return ResponseEntity.ok().body(new CMRespDto<>("가입가능한 사용자이름", true));
     }
 
-
+    @ParamsAspect
     @PostMapping("/user")
     public ResponseEntity<?> register(@RequestBody @Valid UserDto userDto, BindingResult bindingResult) {
 //        if(bindingResult.hasErrors()) {
